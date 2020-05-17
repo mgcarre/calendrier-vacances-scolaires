@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier</title>
+</head>
+
+<body>
+    <div class="selection-zone noprint">
+        <label for="zones">
+            <select name="zones" id="zones">
+                Filtrer par zone
+                <option value="0" selected>Choisir une zone</option>
+            </select>
+        </label>
+    </div>
+    <div class="box">
+        <div class="calendar">
+        </div>
+    </div>
+    <footer class="licence">
+        <p>Cette page utilise les jeux de données <a
+                href="https://data.education.gouv.fr/explore/dataset/fr-en-calendrier-scolaire/">vacances scolaires</a>
+            et <a href="https://www.data.gouv.fr/fr/datasets/jours-feries-en-france/">jours fériés</a> (sous <a
+                href="https://www.etalab.gouv.fr/licence-ouverte-open-licence"><object data="logo-io.svg" height="5%"
+                    type="image/svg+xml"></object> licence ouverte</a>) et le calendrier est généré à l'aide de la
+            librairie <a href="https://github.com/year-calendar/js-year-calendar"><img src="GitHub-Mark-32px.png"
+                    alt="Github Logo">js-year-calendar</a> <a
+                href="https://github.com/mgcarre/calendrier-vacances-scolaires"><img src="GitHub-Mark-32px.png"
+                    alt="Github Logo">Voir le code source</a></p>
+    </footer>
+    <script src="main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+$imgHeight: 20px;
+
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
+
+html,
+body {
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    margin: 0;
+    font-family: 'Titillium Web', sans-serif;
+}
+footer {
+    bottom: 0;
+    position: fixed;
+    background: white;
+    left: 0;
+    right: 0;
+    p {
+        margin:0;
+    }
+}
+object, img {
+    height: $imgHeight;
+    margin-left: $imgHeight/6;
+    margin-right: $imgHeight/6;
+}
+
+.selection-zone {
+    margin-left: 50%;
+
+    select {
+        background-color: #0563af;
+        color: white;
+        padding: 12px;
+        width: 250px;
+        border: none;
+        font-size: 20px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        -webkit-appearance: button;
+        appearance: button;
+        outline: none;
+    }
+    option {
+        padding: 30px;
+    }
+}
+
+.selection-zone::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20%;
+  height: 100%;
+  text-align: center;
+  font-size: 28px;
+  line-height: 45px;
+  color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.selection-zone:hover::before {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.box {
+    display: inline-block;
+    top: 10%;
+    width: 100%;
+}
+.calendar {
+    height: 100%;
+    display: inline-table;
+
+    .calendar-header {
+        background-color: #f5f5f5;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+        border: 0;
+
+        .year-title {
+            font-size: 1.25em;
+        }
+
+        .year-title:hover,.prev:hover,.next:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .year-title:not(.year-neighbor):not(.year-neighbor2) {
+            border-bottom: 2px solid #2196f3;
+        }
+    }
+
+    .months-container {
+        .month-container {
+            height: 260px;
+            margin-bottom: 1.5em;
+        }
+    }
+
+    table.month {
+        background-color: white;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+        height: 100%;
+
+        th.month-title {
+            background-color: #2196F3;
+            color: white;
+            padding: .85em;
+            font-weight: 400;
+        }
+
+        th.day-header {
+            padding-top: .82em;
+            color: #CDCDCD;
+            font-weight: 400;
+            font-size: .75em;
+        }
+
+        td.day {
+
+            .day-content {
+                padding: .5em;
+                border-radius: 100%;
+            }
+        }
+
+        td.day.disabled {
+            background-color: #eee;
+        }
+
+        tr:last-child:not(thead tr) {
+            margin-bottom: 15px;
+        }
+    }
+}
+
+.event-tooltip-content {
+    padding: 5px;
+}
+
+.event-tooltip-content:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+}
+@media print { 
+    .noprint { 
+        visibility: hidden; 
+    } 
+} 

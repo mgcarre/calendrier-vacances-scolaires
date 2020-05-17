@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "watch": false,
+        "outDir": "./public",
+        "module": "es6",
+        "esModuleInterop": true,
+        "target": "es6",
+        // "noImplicitAny": true,
+        "moduleResolution": "node",
+        "removeComments": true,
+        "resolveJsonModule": true
+    },
+    "include": [
+        "./src"
+    ]
+}
