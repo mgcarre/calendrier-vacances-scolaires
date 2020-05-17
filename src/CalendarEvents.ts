@@ -116,9 +116,10 @@ export class CalendarEvents {
      */
     private buildEvent(startDate: string, endDate: string, name: string, details: string, color?: string): ICalendarEvent {
         const offset = -(new Date().getTimezoneOffset()); // on intègre le TZ actuel
-        const calculatedEnd = +new Date(endDate) - (offset * 60 * 60 * 1000); // On réduit de 3h car date de fin correspond à date de reprise (ne doit pas être incluse)...
+        const calculatedEnd = +new Date(endDate) - (3 * 60 * 60 * 1000); // On réduit de 3h car date de fin correspond à date de reprise (ne doit pas être incluse)...
         let finalDate: Date;
-        if (details === 'Jour Ferié') {
+        const regFerie = new RegExp(/^(Jour [fF]erié[\w\s]+)/)
+        if (!regFerie.test(details)) {
             finalDate = new Date(calculatedEnd);
         } else {
             finalDate = new Date(endDate);
