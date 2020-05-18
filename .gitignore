@@ -106,3 +106,4 @@ dist
 # public files inutiles
 public/*.png
 public/*.js
+webpack.dev-config.js

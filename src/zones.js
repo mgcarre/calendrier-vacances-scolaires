@@ -20,11 +20,13 @@ exports.config = [
     },
     {
         "name": "Polynésie",
-        "official": "polynesie-francais"
+        "official": "polynesie-francaise",
+        "title": "Vice-rectorat"
     },
     {
         "name": "Nouvelle Calédonie",
-        "official": "nouvelle-caledonie"
+        "official": "nouvelle-caledonie",
+        "title": "Vice-rectorat"
     },
     {
         "name": "Guyane",
@@ -44,11 +46,13 @@ exports.config = [
     },
     {
         "name": "Saint Pierre et Miquelon",
-        "official": "saint-pierre-et-miquelon"
+        "official": "saint-pierre-et-miquelon",
+        "title": "Service de l'éducation nationale"
     },
     {
         "name": "Wallis et Futuna",
-        "official": "wallis-et-futuna"
+        "official": "wallis-et-futuna",
+        "title": "Vice-rectorat"
     },
     {
         "name": "Guadeloupe",

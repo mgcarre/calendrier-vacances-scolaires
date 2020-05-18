@@ -2,6 +2,8 @@ import Calendar from 'js-year-calendar';
 import 'js-year-calendar/locales/js-year-calendar.fr';
 import { ICalendarEvent } from './ICalendarEvent';
 import { IZones } from './IZones';
+import moment from 'moment';
+moment.locale('fr');
 
 /**
  * Classe permettant de gérer les événements requis par l'objet Calendar du NS js-year-calendar
@@ -13,7 +15,7 @@ export class CalendarEvents {
     private year: number;
     private calendar: Calendar<ICalendarEvent>;
     private element: HTMLSelectElement;
-    private maxRowsQueried = 500;
+    private maxRowsQueried = 100;
     private zones: IZones[];
 
     /**
@@ -37,17 +39,21 @@ export class CalendarEvents {
      * @returns {Promise<ICalendarEvent[]>}
      * @memberof CalendarEvents
      */
-    public async getVacances(): Promise<ICalendarEvent[]> {
-        return await fetch(`https://data.education.gouv.fr/api/records/1.0/search/?dataset=fr-en-calendrier-scolaire&q=&rows=${this.maxRowsQueried}&sort=-start_date&facet=description&facet=start_date&facet=end_date&facet=location&facet=zones&facet=annee_scolaire&refine.zones=${encodeURIComponent(this.element.value)}&refine.start_date=${this.year}&refine.end_date=${this.year}`)
+    public async getVacances(zone: IZones): Promise<ICalendarEvent[]> {
+        //`https://data.education.gouv.fr/api/records/1.0/search/?dataset=fr-en-calendrier-scolaire&q=&rows=${this.maxRowsQueried}&sort=-start_date&facet=description&facet=start_date&facet=end_date&facet=location&facet=zones&facet=annee_scolaire&refine.zones=${encodeURIComponent(zone.name)}&refine.start_date=${this.year}&refine.end_date=${this.year}`
+        return await fetch(`https://data.education.gouv.fr/api/v2/catalog/datasets/fr-en-calendrier-scolaire/records?where=zones%3D%22${encodeURIComponent(zone.name)}%22%20and%20(annee_scolaire%3D%22${this.year - 1}-${this.year}%22%20or%20annee_scolaire%3D%22${this.year}-${this.year + 1}%22)&rows=${this.maxRowsQueried}&sort=start_date&pretty=false&timezone=UTC`)
             .then(rep => rep.json())
             .then((rep: ApiODVacances.RootObject) => {
-                return rep.records.map(record => {
-                    const fin = record.fields.end_date ? record.fields.end_date : record.fields.start_date
-                    const population = record.fields.population ? ` - dédiées aux ${record.fields.population}` : ``;
-                    return this.buildEvent(record.fields.start_date, fin, `${record.fields.description} (Année ${record.fields.annee_scolaire}${population})`, this.parseConsonnance(record.fields.location))
-                })
-            })
-
+                return rep.records.map((rec: ApiODVacances.Record) => {
+                    const record = rec.record;
+                    const fin = record.fields.end_date ? record.fields.end_date : record.fields.start_date;
+                    const population = record.fields.population ? ` - ${record.fields.population}` : ``;
+                    return this.buildEvent(
+                        record.fields.start_date, fin,
+                        `${record.fields.description} (Année ${record.fields.annee_scolaire}${population})`, this.parseConsonnance(record.fields.location, zone.title)
+                    );
+                });
+            });
     }
 
     /**
@@ -81,7 +87,7 @@ export class CalendarEvents {
         } else {
             jf = await this.getJoursFeries(zone.official);
         }
-        const vs = await this.getVacances()
+        const vs = await this.getVacances(zone)
         return jf.concat(vs)
     }
 
@@ -115,18 +121,9 @@ export class CalendarEvents {
      * @memberof CalendarEvents
      */
     private buildEvent(startDate: string, endDate: string, name: string, details: string, color?: string): ICalendarEvent {
-        const offset = -(new Date().getTimezoneOffset()); // on intègre le TZ actuel
-        const calculatedEnd = +new Date(endDate) - (3 * 60 * 60 * 1000); // On réduit de 3h car date de fin correspond à date de reprise (ne doit pas être incluse)...
-        let finalDate: Date;
-        const regFerie = new RegExp(/^(Jour [fF]erié[\w\s]+)/)
-        if (!regFerie.test(details)) {
-            finalDate = new Date(calculatedEnd);
-        } else {
-            finalDate = new Date(endDate);
-        }
         return {
-            startDate: new Date(startDate),
-            endDate: finalDate,
+            startDate: moment(startDate).toDate(),
+            endDate: moment(endDate).toDate(),
             name: name,
             details: details,
             color: color

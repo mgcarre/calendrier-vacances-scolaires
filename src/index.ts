@@ -5,7 +5,7 @@ import { config as zones } from './zones';
 import { IZones } from './IZones';
 
 const evts = new CalendarEvents(calendar, zones);
-const selectZones = document.querySelector('#zones');
+const selectZones: HTMLSelectElement = document.querySelector('#zones');
 zones.sort((a, b) => a.name.localeCompare(b.name));
 zones.forEach((zone: IZones) => {
     const opt = document.createElement('option')

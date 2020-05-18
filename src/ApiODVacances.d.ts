@@ -1,12 +1,13 @@
 declare module ApiODVacances {
 
-    export interface Parameters {
-        dataset: string;
-        timezone: string;
-        rows: number;
-        sort: string[];
-        format: string;
-        facet: string[];
+    export interface Link {
+        href: string;
+        rel: string;
+    }
+
+    export interface Link2 {
+        href: string;
+        rel: string;
     }
 
     export interface Fields {
@@ -16,33 +17,25 @@ declare module ApiODVacances {
         annee_scolaire: string;
         location: string;
         start_date: string;
-        population: string;
+        population?: any;
+    }
+
+    export interface Record2 {
+        id: string;
+        timestamp: Date;
+        size: number;
+        fields: Fields;
     }
 
     export interface Record {
-        datasetid: string;
-        recordid: string;
-        fields: Fields;
-        record_timestamp: Date;
-    }
-
-    export interface Facet {
-        count: number;
-        path: string;
-        state: string;
-        name: string;
-    }
-
-    export interface FacetGroup {
-        facets: Facet[];
-        name: string;
+        links: Link2[];
+        record: Record2;
     }
 
     export interface RootObject {
-        nhits: number;
-        parameters: Parameters;
+        total_count: number;
+        links: Link[];
         records: Record[];
-        facet_groups: FacetGroup[];
     }
 
 }
